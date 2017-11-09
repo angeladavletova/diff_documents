@@ -9,6 +9,7 @@
 
 #define INPUTFILE
 
+//#include <regex>
 int main ()
 {
   setlocale (LC_ALL, "Russian");
