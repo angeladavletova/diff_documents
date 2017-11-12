@@ -1,25 +1,14 @@
 #include "diff_searcher.h"
 #include "text_parser.h"
 #include "max_subsequence.h"
-//#include "document_structure.h"
+#include "text_title.h"
 
-void diff_searcher::print_subsequence () const
+diff_searcher::diff_searcher (const std::string &text1, const std::string &text2, title_type type)
 {
-  std::ofstream test ("subsequence.txt");
-  for (const auto &wi : subsequence)
-    {
-      test << *wi.id << " ";
-    }
-  test.close ();
-}
-
-diff_searcher::diff_searcher (const std::string &text1, const std::string &text2)
-{
-  parser1.reset (new text_parser (text1, words_set));
-  parser2.reset (new text_parser (text2, words_set));
+  parser1.reset (new text_parser (text1, words_set, type));
+  parser2.reset (new text_parser (text2, words_set, type));
   matrix = build_matrix (parser1->get_indexes (), parser2->get_indexes ());
   get_max_subsequence (parser1->get_indexes (), parser2->get_indexes (), matrix, subsequence);
-//  print_subsequence ();
 }
 
 diff_searcher::~diff_searcher ()

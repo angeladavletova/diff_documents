@@ -5,11 +5,8 @@
 #include <iostream>
 #include "diff_searcher.h"
 #include "io.h"
-#include "document_structure.h"
+#include "text_title.h"
 
-#define INPUTFILE
-
-//#include <regex>
 int main ()
 {
   setlocale (LC_ALL, "Russian");
@@ -17,19 +14,19 @@ int main ()
   clock_t start = clock();
 
   std::string text1, text2;
-  document_structure structure;
-  std::string error = read_documents (text1, text2, structure);
+  title_type type;
+  std::string error = read_documents (text1, text2, type);
   if (!error.empty ())
     {
       std::cout << error;
       return 0;
     }
 
-  diff_searcher searcher (text1, text2);
+  diff_searcher searcher (text1, text2, type);
   const std::vector<simple_diff> &diffs = searcher.build_diff ();
 
   clock_t end = clock();
-  double seconds = floor(((double)(end - start) / CLOCKS_PER_SEC * 100) +0.5 ) / 100;
+  double seconds = floor(((double)(end - start) / CLOCKS_PER_SEC * 100) + 0.5 ) / 100;
 
   std::ofstream fout_time ("time.txt");
   fout_time << seconds;

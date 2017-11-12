@@ -6,6 +6,9 @@
 
 typedef std::set<std::string>::iterator index; 
 
+enum class title_type;
+struct text_title;
+
 struct word_info
 {
   index id;
@@ -32,11 +35,12 @@ class text_parser
   const std::string &text;
   std::set<std::string> &words_set;
   std::vector<word_info> words_indexes;
+  std::vector<text_title> titles;
 
   void parse ();
 public:
-	text_parser(const std::string &str, std::set<std::string> &w_set);
-	~text_parser();
+  text_parser(const std::string &str, std::set<std::string> &w_set, title_type type);
+  ~text_parser();
   const std::vector<word_info> &get_indexes () const;
   int get_length_text () const;
 };

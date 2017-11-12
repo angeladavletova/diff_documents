@@ -1,7 +1,16 @@
+//#include <iostream>
+//#include <fstream>
 #include "text_parser.h"
+#include "text_title.h"
 
-text_parser::text_parser (const std::string &str, std::set<std::string> &w_set) : text (str), words_set (w_set)
+text_parser::text_parser (const std::string &str, std::set<std::string> &w_set, title_type type)
+  : text (str), words_set (w_set)
 {
+  titles = build_text_titles (text, type);
+//  std::ofstream fout_time ("res.txt");
+//  for (const auto &title : titles)
+//    fout_time << title.title << "\n";
+//  fout_time.close ();
   parse ();
 }
 

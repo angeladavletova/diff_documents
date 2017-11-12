@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-enum class document_structure
+enum class title_type
 {
   article,
   clause
@@ -15,4 +15,4 @@ struct text_title
   int place_in_text;
 };
 
-std::vector<text_title> build_text_clauses (const std::string &text);
+std::vector<text_title> build_text_titles (const std::string &text, title_type type);

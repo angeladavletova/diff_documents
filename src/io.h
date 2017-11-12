@@ -2,7 +2,7 @@
 
 #include <string>
 
-enum class document_structure;
+enum class title_type;
 
-std::string read_text_from_file (std::string &text, std::string file_path, document_structure &structure);
-std::string read_documents (std::string &text1, std::string &text2, document_structure &structure);
+std::string read_text_from_file (std::string &text, std::string file_path, title_type &structure);
+std::string read_documents (std::string &text1, std::string &text2, title_type &structure);

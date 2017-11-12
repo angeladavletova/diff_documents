@@ -12,7 +12,7 @@ QMAKE_CXXFLAGS_RELEASE -= -O1
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE *= -O3
 
-SOURCES += ./src/main.cpp  ./src/diff_searcher.cpp  ./src/document_structure.cpp \
+SOURCES += ./src/main.cpp  ./src/diff_searcher.cpp  ./src/text_title.cpp \
            ./src/io.cpp  ./src/text_parser.cpp
-HEADERS += ./src/diff_searcher.h  ./src/document_structure.h  ./src/document_structure.h \
+HEADERS += ./src/diff_searcher.h  ./src/text_title.h \
            ./src/io.h  ./src/text_parser.h  ./src/max_subsequence.h
