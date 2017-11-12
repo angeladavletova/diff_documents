@@ -68,3 +68,21 @@ std::vector<text_title> build_text_titles (const std::string &text, title_type t
     }
   return titles;
 }
+
+void get_max_increasing_subsequence (std::vector<text_title> &titles)
+{
+  int n = static_cast<int> (titles.size ());
+  std::vector<text_title> max_increasing_subsequence (n + 1); // fill in immediately n+1
+  max_increasing_subsequence[0].title = 0;
+  for (int i = 1; i < n + 1; i++)
+    max_increasing_subsequence[0].title = n + 1;
+
+  int j;
+  for (i = 0; i < n; i++)
+    {
+      j = static_cast<int> ((upper_bound (d.begin(), d.end(), a[i], ) - d.begin()));
+      if (d[j-1] < a[i] && a[i] < d[j])
+        d[j] = a[i];
+    }
+
+}
