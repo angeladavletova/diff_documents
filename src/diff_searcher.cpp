@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "diff_searcher.h"
 #include "text_parser.h"
 #include "max_subsequence.h"
@@ -56,6 +57,7 @@ const std::vector<simple_diff> &diff_searcher::build_diff ()
         }
       else if (indexes1[i1] != subsequence[k] && indexes2[i2] != subsequence[k]) // a b c
         {
+          current_diff.init_title (parser1->get_titles (), indexes1[i1].place_in_text);
           add_to_str (current_diff.range_str1, indexes1[i1], length_text1);
           add_to_str (current_diff.range_str2, indexes2[i2], length_text2);
           current_diff.type = simple_diff_type::changing;
@@ -64,6 +66,7 @@ const std::vector<simple_diff> &diff_searcher::build_diff ()
         }
       else if (indexes1[i1] == subsequence[k]) // c a c
         {
+          //current_diff.init_title (parser1->get_titles (), i1);
           int number_of_passes = result.empty () ? 0 : i2 - result.back ().index_last_word - 1;
           if ( current_diff.empty ()
                && !result.empty ()
@@ -91,6 +94,7 @@ const std::vector<simple_diff> &diff_searcher::build_diff ()
         }
       else // a c c
         {
+          //current_diff.init_title (parser1->get_titles (), i1);
           int number_of_passes = result.empty () ? 0 : i1 - result.back ().index_last_word - 1;
           if ( current_diff.empty ()
                && !result.empty ()
@@ -139,10 +143,26 @@ const std::vector<simple_diff> &diff_searcher::build_diff ()
   return result;
 }
 
+void simple_diff::init_title (const std::vector<text_title> &titles, int i)
+{
+  if (!title.empty ())
+    return;
+
+  auto it = std::upper_bound (titles.cbegin (), titles.cend (), i, [] (int i, const text_title &title) {
+      return i < title.place_in_text;
+    });
+  if (it == titles.cbegin ())
+    return;
+
+  it--;
+  title = (*it).title;
+}
+
 void simple_diff::clear ()
 {
   range_str1 = {-1, -1};
   range_str2 = {-1, -1};
+  title.clear ();
 }
 
 bool simple_diff::empty () const
@@ -150,20 +170,23 @@ bool simple_diff::empty () const
   return pair_is_empty (range_str1) && pair_is_empty (range_str2);
 }
 
-void simple_diff::print (std::ofstream &file, const std::string &text1, const std::string &text2) const
+void simple_diff::print (std::ofstream &file, const std::string &text1, const std::string &text2,
+                         title_type t_type) const
 {
   switch (type)
     {
     case simple_diff_type::adding:
       {
-        file << "Добавили:\n"
+        file << prefix_title (t_type, title)
+             << " добавили:\n"
              << text2.substr (range_str2.first, range_str2.second - range_str2.first)
              << "\n\n";
         break;
       }
     case simple_diff_type::changing:
       {
-        file << "Заменили:\n"
+        file << prefix_title (t_type, title)
+             << " заменили:\n"
              << text1.substr (range_str1.first, range_str1.second - range_str1.first)
              << "\n на: \n"
              << text2.substr (range_str2.first, range_str2.second - range_str2.first)
@@ -172,7 +195,9 @@ void simple_diff::print (std::ofstream &file, const std::string &text1, const st
       }
     case simple_diff_type::deleting:
       {
-        file << "Удалили:\n"
+        file << prefix_title (t_type, title)
+             << " удалили:\n"
+             << title
              << text1.substr (range_str1.first, range_str1.second - range_str1.first)
              << "\n\n";
         break;

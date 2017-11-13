@@ -9,6 +9,7 @@
 class text_parser;
 struct word_info;
 enum class title_type;
+struct text_title;
 
 enum class simple_diff_type
 {
@@ -24,12 +25,15 @@ struct simple_diff
   std::pair<int, int> range_str2 = {-1, -1};
   simple_diff_type type = simple_diff_type::null;
   int index_last_word = -1;
+  std::string title;
 
   void clear ();
 
   bool empty () const;
 
-  void print (std::ofstream &file, const std::string &text1, const std::string &text2) const;
+  void print (std::ofstream &file, const std::string &text1, const std::string &text2, title_type t_type) const;
+
+  void init_title (const std::vector<text_title> &titles, int i);
 };
 
 class diff_searcher

@@ -66,23 +66,41 @@ std::vector<text_title> build_text_titles (const std::string &text, title_type t
       titles = build_text_clauses (text);
       break;
     }
+
   return titles;
+//  return get_max_increasing_subsequence (titles, [] (const text_title &title1, const text_title &title2) {
+//      std::string val1 = title1.title;
+//      std::string val2 = title2.title;
+//      int len1 = static_cast<int> (val1.length ());
+//      int len2 = static_cast<int> (val2.length ());
+//      int i = 0;
+//      while (i < len1 && i < len2)
+//        {
+//          if (val1[i] == val2[i])
+//            {
+//              i++;
+//              continue;
+//            }
+//          if (val1[i] != '.' && val2[i] != '.' )
+//            return val1[i] < val2[i];
+//          if (val1[i] == '.')
+//            return true;
+//          return false;
+//        }
+//      return len1 < len2;
+//    });
 }
 
-void get_max_increasing_subsequence (std::vector<text_title> &titles)
+std::string prefix_title (title_type type, const std::string &title)
 {
-  int n = static_cast<int> (titles.size ());
-  std::vector<text_title> max_increasing_subsequence (n + 1); // fill in immediately n+1
-  max_increasing_subsequence[0].title = 0;
-  for (int i = 1; i < n + 1; i++)
-    max_increasing_subsequence[0].title = n + 1;
-
-  int j;
-  for (i = 0; i < n; i++)
+  if (title.empty ())
+    return "";
+  switch (type)
     {
-      j = static_cast<int> ((upper_bound (d.begin(), d.end(), a[i], ) - d.begin()));
-      if (d[j-1] < a[i] && a[i] < d[j])
-        d[j] = a[i];
+    case title_type::article:
+      return std::string ("В статье ") + title;
+    case title_type::clause:
+      return std::string ("В пункте ") + title;
     }
-
+  return "";
 }

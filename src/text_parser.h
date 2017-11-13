@@ -43,5 +43,6 @@ public:
   ~text_parser();
   const std::vector<word_info> &get_indexes () const;
   int get_length_text () const;
+  const std::vector<text_title> &get_titles () const;
 };
 
