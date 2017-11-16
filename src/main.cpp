@@ -9,6 +9,13 @@
 
 int main ()
 {
+//  int n = 10;
+//  std::string a = std::to_string (n);
+//  std::string b = "1.3.";
+//  if (a > b)
+//    std::cout << "true";
+//  else
+//    std::cout << "false";
   setlocale (LC_ALL, "Russian");
 
   clock_t start = clock();
@@ -33,11 +40,10 @@ int main ()
 
   std::ofstream fout ("diff.txt");
   for (const simple_diff &diff : diffs)
-    diff.print (fout, text1, text2);
+    diff.print (fout, text1, text2, type);
 
   fout_time.close ();
   fout.close ();
 
   return 0;
 }
-
