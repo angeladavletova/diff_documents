@@ -20,7 +20,7 @@ void text_parser::parse ()
   int length_text = text.length (); 
   for (int i = 0; i < length_text; i++) 
     {
-      if ((text[i] >= 'Ã ' && text[i] <= 'Ã¿') || (text[i] >= 'Ã€' && text[i] <= 'ÃŸ') || (text[i] >= '0' && text[i] <= '9'))
+      if ((text[i] >= 'à' && text[i] <= 'ÿ') || (text[i] >= 'À' && text[i] <= 'ß') || (text[i] >= '0' && text[i] <= '9'))
         {
           current_word += text[i];
         }

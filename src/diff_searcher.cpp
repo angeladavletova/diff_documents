@@ -156,23 +156,23 @@ void simple_diff::print (std::ofstream &file, const std::string &text1, const st
     {
     case simple_diff_type::adding:
       {
-        file << "Ð”Ð¾Ð±Ð°Ð²Ð¸Ð»Ð¸:\n"
+        file << "Äîáàâèëè:\n"
              << text2.substr (range_str2.first, range_str2.second - range_str2.first)
              << "\n\n";
         break;
       }
     case simple_diff_type::changing:
       {
-        file << "Ð—Ð°Ð¼ÐµÐ½Ð¸Ð»Ð¸:\n"
+        file << "Çàìåíèëè:\n"
              << text1.substr (range_str1.first, range_str1.second - range_str1.first)
-             << "\n Ð½Ð°: \n"
+             << "\n íà: \n"
              << text2.substr (range_str2.first, range_str2.second - range_str2.first)
              << "\n\n";
         break;
       }
     case simple_diff_type::deleting:
       {
-        file << "Ð£Ð´Ð°Ð»Ð¸Ð»Ð¸:\n"
+        file << "Óäàëèëè:\n"
              << text1.substr (range_str1.first, range_str1.second - range_str1.first)
              << "\n\n";
         break;
