@@ -4,7 +4,7 @@
 #include <vector>
 #include <set>
 
-typedef std::set<std::string>::iterator index; 
+typedef std::set<std::string>::iterator index;
 
 enum class title_type;
 struct text_title;
