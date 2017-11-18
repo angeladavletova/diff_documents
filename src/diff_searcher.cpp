@@ -66,7 +66,6 @@ const std::vector<simple_diff> &diff_searcher::build_diff ()
         }
       else if (indexes1[i1] == subsequence[k]) // c a c
         {
-          //current_diff.init_title (parser1->get_titles (), i1);
           int number_of_passes = result.empty () ? 0 : i2 - result.back ().index_last_word - 1;
           if ( current_diff.empty ()
                && !result.empty ()
@@ -86,7 +85,10 @@ const std::vector<simple_diff> &diff_searcher::build_diff ()
           else
             {
               if (current_diff.empty ())
-                current_diff.type = simple_diff_type::adding;
+                {
+                  current_diff.type = simple_diff_type::adding;
+                  current_diff.init_title (parser1->get_titles (), indexes1[i1].place_in_text);
+                }
               add_to_str (current_diff.range_str2, indexes2[i2], length_text2);
               current_diff.index_last_word = i2;
               i2++;
@@ -94,7 +96,6 @@ const std::vector<simple_diff> &diff_searcher::build_diff ()
         }
       else // a c c
         {
-          //current_diff.init_title (parser1->get_titles (), i1);
           int number_of_passes = result.empty () ? 0 : i1 - result.back ().index_last_word - 1;
           if ( current_diff.empty ()
                && !result.empty ()
@@ -114,7 +115,10 @@ const std::vector<simple_diff> &diff_searcher::build_diff ()
           else
             {
               if (current_diff.empty ())
-                current_diff.type = simple_diff_type::deleting;
+                {
+                  current_diff.type = simple_diff_type::deleting;
+                  current_diff.init_title (parser1->get_titles (), indexes1[i1].place_in_text);
+                }
               add_to_str (current_diff.range_str1, indexes1[i1], length_text1);
               current_diff.index_last_word = i1;
               i1++;
@@ -178,7 +182,7 @@ void simple_diff::print (std::ofstream &file, const std::string &text1, const st
     case simple_diff_type::adding:
       {
         file << prefix_title (t_type, title)
-             << " äîáàâèëè:\n"
+             << "ÄÎÁÀÂÈËÈ:\n"
              << text2.substr (range_str2.first, range_str2.second - range_str2.first)
              << "\n\n";
         break;
@@ -186,7 +190,7 @@ void simple_diff::print (std::ofstream &file, const std::string &text1, const st
     case simple_diff_type::changing:
       {
         file << prefix_title (t_type, title)
-             << " çàìåíèëè:\n"
+             << "ÇÀÌÅÍÈËÈ:\n"
              << text1.substr (range_str1.first, range_str1.second - range_str1.first)
              << "\n íà: \n"
              << text2.substr (range_str2.first, range_str2.second - range_str2.first)
@@ -196,8 +200,7 @@ void simple_diff::print (std::ofstream &file, const std::string &text1, const st
     case simple_diff_type::deleting:
       {
         file << prefix_title (t_type, title)
-             << " óäàëèëè:\n"
-             << title
+             << "ÓÄÀËÈËÈ:\n"
              << text1.substr (range_str1.first, range_str1.second - range_str1.first)
              << "\n\n";
         break;

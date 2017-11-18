@@ -67,28 +67,45 @@ std::vector<text_title> build_text_titles (const std::string &text, title_type t
       break;
     }
 
-  return titles;
-//  return get_max_increasing_subsequence (titles, [] (const text_title &title1, const text_title &title2) {
-//      std::string val1 = title1.title;
-//      std::string val2 = title2.title;
-//      int len1 = static_cast<int> (val1.length ());
-//      int len2 = static_cast<int> (val2.length ());
-//      int i = 0;
-//      while (i < len1 && i < len2)
-//        {
-//          if (val1[i] == val2[i])
-//            {
-//              i++;
-//              continue;
-//            }
-//          if (val1[i] != '.' && val2[i] != '.' )
-//            return val1[i] < val2[i];
-//          if (val1[i] == '.')
-//            return true;
-//          return false;
-//        }
-//      return len1 < len2;
-//    });
+  auto parse_title = [] (const std::string &title) {
+      std::vector<int> title_numbers;
+      int current_val = 0;
+      for (char t: title)
+        {
+          if (t != '.')
+            current_val = current_val * 10 + atoi (&t);
+          else
+            {
+              title_numbers.push_back (current_val);
+              current_val = 0;
+            }
+        }
+      title_numbers.push_back (current_val);
+      return title_numbers;
+    };
+
+  auto compare = [parse_title] (const text_title &title1, const text_title &title2) {
+      std::string val1 = title1.title;
+      std::string val2 = title2.title;
+      std::vector<int> title_number1 = parse_title (val1);
+      std::vector<int> title_number2 = parse_title (val2);
+      int size1 = static_cast<int> (title_number1.size ());
+      int size2 = static_cast<int> (title_number2.size ());
+      int i = 0;
+
+      while (i < size1 && i < size2)
+        {
+          if (title_number1[i] < title_number2[i])
+            return true;
+          if (title_number1[i] > title_number2[i])
+            return false;
+          i++;
+        }
+      return size1 < size2;
+    };
+
+  //return titles;
+  return get_max_increasing_subsequence (titles, compare);
 }
 
 std::string prefix_title (title_type type, const std::string &title)
@@ -98,9 +115,10 @@ std::string prefix_title (title_type type, const std::string &title)
   switch (type)
     {
     case title_type::article:
-      return std::string ("В статье ") + title;
+      return std::string ("В Cтатье ") + title + " ";
     case title_type::clause:
-      return std::string ("В пункте ") + title;
+      //return std::string ("В пункте ") + title; // Bad work
+      break;
     }
   return "";
 }

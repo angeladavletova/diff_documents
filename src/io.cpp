@@ -28,8 +28,8 @@ std::string read_text_from_file (std::string &text, std::string file_path, title
 std::string read_documents (std::string &text1, std::string &text2, title_type &structure)
 {
 
-  //std::string file1_path = "pdd18.txt", file2_path = "pdd19.txt";
-  std::string file1_path = "fz1.txt", file2_path = "fz2.txt";
+  std::string file1_path = "pdd18.txt", file2_path = "pdd19.txt";
+  //std::string file1_path = "fz1.txt", file2_path = "fz2.txt";
 #ifdef INPUTFILE
   std::cout << "Enter file1 path\n";
   std::cin >> file1_path;

@@ -9,9 +9,20 @@ text_parser::text_parser (const std::string &str, std::set<std::string> &w_set, 
   titles = build_text_titles (text, type);
   std::ofstream fout_time ("res.txt");
   for (const auto &title : titles)
-    fout_time << title.title << "\n" << title.place_in_text << "\n\n";
+    fout_time << title.title << "\n";// << title.place_in_text << "\n\n";
   fout_time.close ();
   parse ();
+}
+
+static int init_article (std::string &article, int i, const std::string &text)
+{
+  int length_text = text.length ();
+  while (i < length_text && ((text[i] >= '0' && text[i] <= '9') || text[i] == '.'))
+    {
+      article += text[i];
+      i++;
+    }
+  return i;
 }
 
 void text_parser::parse ()
@@ -26,6 +37,8 @@ void text_parser::parse ()
         }
       else if (!current_word.empty ())
         {
+          if (current_word == "Статья")
+            i = init_article (current_word, i + 1, text);
           word_info w (words_set.insert (current_word).first, i - current_word.length ());
           words_indexes.push_back (w);
           current_word.clear ();
