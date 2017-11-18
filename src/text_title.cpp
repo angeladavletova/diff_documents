@@ -70,25 +70,29 @@ std::vector<text_title> build_text_titles (const std::string &text, title_type t
   auto parse_title = [] (const std::string &title) {
       std::vector<int> title_numbers;
       int current_val = 0;
+
+      auto add_val = [&current_val, &title_numbers] () {
+          if (current_val != 0)
+            title_numbers.push_back (current_val);
+        };
+
       for (char t: title)
         {
           if (t != '.')
             current_val = current_val * 10 + atoi (&t);
           else
             {
-              title_numbers.push_back (current_val);
+              add_val ();
               current_val = 0;
             }
         }
-      title_numbers.push_back (current_val);
+      add_val ();
       return title_numbers;
     };
 
   auto compare = [parse_title] (const text_title &title1, const text_title &title2) {
-      std::string val1 = title1.title;
-      std::string val2 = title2.title;
-      std::vector<int> title_number1 = parse_title (val1);
-      std::vector<int> title_number2 = parse_title (val2);
+      std::vector<int> title_number1 = parse_title (title1.title);
+      std::vector<int> title_number2 = parse_title (title2.title);
       int size1 = static_cast<int> (title_number1.size ());
       int size2 = static_cast<int> (title_number2.size ());
       int i = 0;
