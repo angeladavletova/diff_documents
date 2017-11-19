@@ -16,7 +16,7 @@ std::string read_text_from_file (std::string &text, std::string file_path, title
   structure = title_type::clause;
   while (std::getline(file, s))
     {
-      text += " " + s;
+      text += s + "\n";
       if (s.find ("Статья 1.") != std::string::npos)
         structure = title_type::article;
     }

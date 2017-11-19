@@ -1,21 +1,18 @@
 #include "text_parser.h"
 #include "text_title.h"
 
+#include <iostream>
+#include <fstream>
+
 text_parser::text_parser (const std::string &str, std::set<std::string> &w_set, title_type type)
   : text (str), words_set (w_set)
 {
   titles = build_text_titles (text, type);
+  std::ofstream fout_time ("res.txt");
+  for (const auto &title : titles)
+    fout_time << title.title << "\n";// << title.place_in_text << "\n\n";
+  fout_time.close ();
   parse ();
-}
-
-static bool is_num (char c)
-{
-  return c >= '0' && c <= '9';
-}
-
-static bool is_letter (char c)
-{
-  return (c >= 'à' && c <= 'ÿ') || (c >= 'À' && c <= 'ß');
 }
 
 static int add_number_to_article (std::string &article, int i, const std::string &text)

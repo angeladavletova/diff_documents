@@ -9,7 +9,7 @@ std::vector<text_title> build_text_clauses (const std::string &text)
   int length_text = text.length ();
   for (int i = 0; i < length_text; i++)
     {
-      if ((text[i] >= '0' && text[i] <= '9') || (text[i] == '.'))
+      if (is_num (text[i]) || (text[i] == '.'))
         {
           current_clause += text[i];
         }
@@ -18,10 +18,13 @@ std::vector<text_title> build_text_clauses (const std::string &text)
           if (   current_clause[current_clause.length () - 1] == '.'
               && current_clause[0] != '.')
             {
-              text_title t;
-              t.title = current_clause;
-              t.place_in_text = i - current_clause.length ();
-              clauses.push_back (t);
+              if (i - current_clause.length () < 1 || text[i - current_clause.length () - 1] == '\n')
+                {
+                  text_title t;
+                  t.title = current_clause;
+                  t.place_in_text = i - current_clause.length ();
+                  clauses.push_back (t);
+                }
             }
           current_clause.clear ();
         }
@@ -108,8 +111,8 @@ std::vector<text_title> build_text_titles (const std::string &text, title_type t
       return size1 < size2;
     };
 
-  //return titles;
-  return get_max_increasing_subsequence (titles, compare);
+  return titles;
+  //return get_max_increasing_subsequence (titles, compare);
 }
 
 std::string prefix_title (title_type type, const std::string &title)
@@ -121,8 +124,20 @@ std::string prefix_title (title_type type, const std::string &title)
     case title_type::article:
       return std::string ("В Cтатье ") + title + " ";
     case title_type::clause:
-      //return std::string ("В пункте ") + title; // Bad work
+      return std::string ("В пункте ") + title + " "; // Bad work
       break;
     }
   return "";
+}
+
+
+bool is_num (char c)
+{
+  return c >= '0' && c <= '9';
+}
+
+
+bool is_letter (char c)
+{
+  return (c >= 'а' && c <= 'я') || (c >= 'А' && c <= 'Я');
 }

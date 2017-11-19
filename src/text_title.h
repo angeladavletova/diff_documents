@@ -4,6 +4,10 @@
 #include <vector>
 #include <algorithm>
 
+bool is_num (char c);
+
+bool is_letter (char c);
+
 enum class title_type
 {
   article,
