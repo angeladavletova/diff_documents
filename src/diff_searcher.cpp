@@ -87,7 +87,7 @@ const std::vector<simple_diff> &diff_searcher::build_diff ()
               if (current_diff.empty ())
                 {
                   current_diff.type = simple_diff_type::adding;
-                  current_diff.init_title (parser1->get_titles (), indexes1[i1].place_in_text);
+                  current_diff.init_title (parser2->get_titles (), indexes2[i2].place_in_text);
                 }
               add_to_str (current_diff.range_str2, indexes2[i2], length_text2);
               current_diff.index_last_word = i2;
