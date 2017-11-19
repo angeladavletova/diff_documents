@@ -2,6 +2,15 @@
 #include <string>
 #include <regex>
 
+static bool is_clause (int i, const std::string &clause, const std::string &text)
+{
+  int len_clause = clause.length ();
+  int previous_pos = i - len_clause - 1;
+  return clause[len_clause - 1] == '.'
+      && clause[0] != '.'
+      && (previous_pos < 0 || text[previous_pos] == '\n');
+}
+
 std::vector<text_title> build_text_clauses (const std::string &text)
 {
   std::string current_clause;
@@ -15,16 +24,12 @@ std::vector<text_title> build_text_clauses (const std::string &text)
         }
       else if (!current_clause.empty ())
         {
-          if (   current_clause[current_clause.length () - 1] == '.'
-              && current_clause[0] != '.')
+          if (is_clause (i, current_clause, text))
             {
-              if (i - current_clause.length () < 1 || text[i - current_clause.length () - 1] == '\n')
-                {
-                  text_title t;
-                  t.title = current_clause;
-                  t.place_in_text = i - current_clause.length ();
-                  clauses.push_back (t);
-                }
+              text_title t;
+              t.title = current_clause;
+              t.place_in_text = i - current_clause.length ();
+              clauses.push_back (t);
             }
           current_clause.clear ();
         }
